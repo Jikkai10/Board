@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="create-trigger-after-insert-cards" author="mogli">
+        <sql>
+            CREATE TRIGGER after_insert_cards
+            AFTER INSERT ON CARDS
+            FOR EACH ROW
+            BEGIN
+                INSERT INTO movements_cards (card_id, from_column_id, to_column_id)
+                VALUES (NEW.id, NULL, NEW.board_column_id);
+            END;
+        </sql>
+    </changeSet>
+</databaseChangeLog>
